@@ -1,0 +1,40 @@
+{
+  "name": "ngcsserver",
+  "version": "1.0.0",
+  "description": "Server aggregating all ngcs modules and responsible from server launching",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lstumme/ngcsserver.git"
+  },
+  "keywords": [],
+  "author": "Ludovic Stumme <ludovic.stumme@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/lstumme/ngcsserver/issues"
+  },
+  "homepage": "https://github.com/lstumme/ngcsserver#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongodb": "^3.6.2",
+    "mongoose": "^5.10.11",
+    "ngcsadmin": "git+https://github.com/lstumme/ngcsadmin.git",
+    "ngcsgroups": "git+https://github.com/lstumme/ngcsgroups.git",
+    "ngcshelpers": "git+https://github.com/lstumme/ngcshelpers.git",
+    "ngcstools": "git+https://github.com/lstumme/ngcstools.git",
+    "ngcsusers": "git+https://github.com/lstumme/ngcsusers.git"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^8.2.1",
+    "mongodb-memory-server": "^6.9.2",
+    "nyc": "^15.1.0",
+    "sinon": "^9.2.1"
+  }
+}
