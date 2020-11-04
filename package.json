@@ -33,11 +33,5 @@
     "ngcstools": "git+https://github.com/lstumme/ngcstools.git",
     "ngcsusers": "git+https://github.com/lstumme/ngcsusers.git"
   },
-  "devDependencies": {
-    "chai": "^4.2.0",
-    "mocha": "^8.2.1",
-    "mongodb-memory-server": "^6.9.2",
-    "nyc": "^15.1.0",
-    "sinon": "^9.2.1"
-  }
+  "devDependencies": {}
 }
