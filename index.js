@@ -3,6 +3,7 @@ const path = require('path');
 const mongoose = require('mongoose');
 const bodyparser = require('body-parser');
 const dotenv = require('dotenv');
+const cors = require('cors');
 const { UserRoutes, AuthRoutes } = require('ngcsusers');
 const { AdminRoutes, initAdminDB } = require('ngcsadmin');
 const { GroupRoutes } = require('ngcsgroups');
@@ -15,6 +16,8 @@ const PORT = process.env.PORT || 5000;
 const DB_CONNECTION = process.env.DB_CONNECTION;
 
 console.log(DB_CONNECTION);
+
+app.use(cors());
 app.use(bodyparser.json());
 
 app.use('/admin', AdminRoutes());
