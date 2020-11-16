@@ -4,9 +4,8 @@ const mongoose = require('mongoose');
 const bodyparser = require('body-parser');
 const dotenv = require('dotenv');
 const cors = require('cors');
-const { UserRoutes, AuthRoutes } = require('ngcsusers');
+const { UserRoutes, AuthRoutes, initUsersDB } = require('ngcsusers');
 const { AdminRoutes, initAdminDB } = require('ngcsadmin');
-const { GroupRoutes } = require('ngcsgroups');
 const { ToolRoutes, ModuleRoutes, EnvironmentRoutes, initToolsDB } = require('ngcstools');
 
 dotenv.config();
@@ -23,7 +22,6 @@ app.use(bodyparser.json());
 app.use('/admin', AdminRoutes());
 app.use(UserRoutes());
 app.use(AuthRoutes());
-app.use(GroupRoutes());
 app.use(ToolRoutes());
 app.use(ModuleRoutes());
 app.use(EnvironmentRoutes());
@@ -31,12 +29,11 @@ app.use(EnvironmentRoutes());
 app.get('/', (req, res) => res.sendFile(path.join(__dirname, './public', 'index.html')));
 
 app.use((req, res, next) => {
-    next({statusCode: 404, message: 'Page Not Found'});
+    next({ statusCode: 404, message: 'Page Not Found' });
 });
 
-app.use((err,req,res,next) => {
-    console.log(err);
-    res.status(err.statusCode).json({message: err.message});
+app.use((err, req, res, next) => {
+    res.status(err.statusCode).json({ message: err.message });
 });
 
 mongoose.connect(DB_CONNECTION, {
@@ -49,6 +46,9 @@ mongoose.connect(DB_CONNECTION, {
     })
     .then(result => {
         return initToolsDB();
+    })
+    .then(result => {
+        return initUsersDB();
     })
     .then(result => {
         app.listen(PORT, () => console.log(`Listening on ${PORT}`));
