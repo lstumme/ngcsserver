@@ -4,9 +4,10 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const { dbHandler } = require('ngcstesthelpers');
 const { UserServices } = require('ngcsusers');
+const { RoleServices } = require('ngcsroles');
+
 const authcontroller = require('../controllers/authcontroller');
 const isauth = require('../middleware/is-auth');
-const { RoleServices } = require('ngcsroles');
 
 describe('Auth Integration', function () {
     describe('#login function', function () {

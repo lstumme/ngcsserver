@@ -30,7 +30,6 @@
     "jsonwebtoken": "^8.5.1",
     "mongodb": "^3.6.3",
     "mongoose": "^5.11.5",
-    "ngcsadmin": "git+https://github.com/lstumme/ngcsadmin.git",
     "ngcshelpers": "git+https://github.com/lstumme/ngcshelpers.git",
     "ngcsroles": "git+https://github.com/lstumme/ngcsroles.git",
     "ngcstools": "git+https://github.com/lstumme/ngcstools.git",
