@@ -6,35 +6,35 @@ const adminRoleName = 'administrators'
 const toolsRoleName = 'toolsmanagers';
 
 const initdb = async () => {
-    return RoleServices.findRole({ name: adminRoleName })
+    return RoleServices.findRoleByName({ name: adminRoleName })
         .then(admins => {
-            if (!admins) {
-                const error = new Error(adminRoleName + ' role not found');
-                throw error;
-            }
             return admins;
         })
+        .catch(() => {
+            const error = new Error(adminRoleName + ' role not found');
+            throw error;
+        })
         .then(admins => {
-            return RoleServices.findRole({ name: toolsRoleName })
+            return RoleServices.findRoleByName({ name: toolsRoleName })
                 .then(tools => {
-                    if (!tools) {
-                        const error = new Error(toolsRoleName + ' role not found');
-                        throw error;
-                    }
                     return ({ admins, tools });
+                })
+                .catch(() => {
+                    const error = new Error(toolsRoleName + ' role not found');
+                    throw error;
                 })
         })
         .then(({ admins, tools }) => {
-            return RoleServices.findRole({ name: usersRoleName })
+            return RoleServices.findRoleByName({ name: usersRoleName })
                 .then(users => {
-                    if (!users) {
-                        return RoleServices.createRole({ name: usersRoleName, label: usersLabelName });
-                    }
                     return users;
+                })
+                .catch(() => {
+                    return RoleServices.createRole({ name: usersRoleName, label: usersLabelName });
                 })
                 .then(users => {
                     if (!admins.subRoles.includes(users.roleId)) {
-                        return RoleServices.addSubRoleToRole({ parentRoleId: admins.roleId, subRoleId: users.roleId })
+                        return RoleServices.addSubRoleToRole({ roleId: admins.roleId, subRoleId: users.roleId })
                             .then(result => {
                                 return users;
                             })
@@ -43,7 +43,7 @@ const initdb = async () => {
                 })
                 .then(users => {
                     if (!tools.subRoles.includes(users.roleId)) {
-                        return RoleServices.addSubRoleToRole({ parentRoleId: tools.roleId, subRoleId: users.roleId })
+                        return RoleServices.addSubRoleToRole({ roleId: tools.roleId, subRoleId: users.roleId })
                             .then(result => {
                                 return users;
                             })

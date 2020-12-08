@@ -5,25 +5,25 @@ const toolsRoleName = 'toolsmanagers';
 const toolsRoleLabel = 'Gestionnaire';
 
 const initdb = async () => {
-    return RoleServices.findRole({ name: adminRoleName })
+    return RoleServices.findRoleByName({ name: adminRoleName })
         .then(admins => {
-            if (!admins) {
-                const error = new Error(adminRoleName + ' role not found');
-                throw error;
-            }
             return admins;
         })
+        .catch(() => {
+            const error = new Error(adminRoleName + ' role not found');
+            throw error;
+        })
         .then(admins => {
-            return RoleServices.findRole({ name: toolsRoleName })
+            return RoleServices.findRoleByName({ name: toolsRoleName })
                 .then(tools => {
-                    if (!tools) {
-                        return RoleServices.createRole({ name: toolsRoleName, label: toolsRoleLabel });
-                    }
                     return tools;
+                })
+                .catch(() => {
+                    return RoleServices.createRole({ name: toolsRoleName, label: toolsRoleLabel });
                 })
                 .then(tools => {
                     if (!admins.subRoles.includes(tools.roleId)) {
-                        return RoleServices.addSubRoleToRole({ parentRoleId: admins.roleId, subRoleId: tools.roleId })
+                        return RoleServices.addSubRoleToRole({ roleId: admins.roleId, subRoleId: tools.roleId })
                             .then(result => {
                                 return tools;
                             })

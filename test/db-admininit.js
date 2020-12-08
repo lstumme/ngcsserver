@@ -19,7 +19,7 @@ describe('Admin Database Initialization', function () {
 
     it('should create admin user and administrator role if not exist', function (done) {
         initadmindb().then(result => {
-            return UserServices.findUser({ login: 'admin' })
+            return UserServices.findUserByLogin({ login: 'admin' })
                 .then(user => {
                     if (!user) {
                         assert.fail('Admin User creation failed');
@@ -27,7 +27,7 @@ describe('Admin Database Initialization', function () {
                     return user;
                 })
                 .then(user => {
-                    RoleServices.findRole({ name: 'administrators' })
+                    RoleServices.findRoleByName({ name: 'administrators' })
                         .then(role => {
                             if (!role) {
                                 assert.fail('Administrator role creation failed');
@@ -55,9 +55,9 @@ describe('Admin Database Initialization', function () {
                     .then(adminUser => {
                         initadmindb()
                             .then(result => {
-                                UserServices.findUser({ login: 'admin' })
+                                UserServices.findUserByLogin({ login: 'admin' })
                                     .then(newAdminUser => {
-                                        RoleServices.findRole({ name: 'administrators' })
+                                        RoleServices.findRoleByName({ name: 'administrators' })
                                             .then(adminRole => {
                                                 if (!adminRole) {
                                                     assert.fail('Admin Role creation failed');
@@ -79,7 +79,7 @@ describe('Admin Database Initialization', function () {
         RoleServices.createRole({ name: 'administrators', label: 'admins' })
             .then(adminRole => {
                 initadmindb().then(result => {
-                    UserServices.findUser({ login: 'admin' })
+                    UserServices.findUserByLogin({ login: 'admin' })
                         .then(adminUser => {
                             if (!adminUser) {
                                 assert.fail('Admin User creation failed');
@@ -103,13 +103,18 @@ describe('Admin Database Initialization', function () {
                 })
                     .then(adminUser => {
                         initadmindb()
-                            .then(result => {
-                                UserServices.findUser({ login: 'admin' })
+                            .then(() => {
+                                UserServices.findUserByLogin({ login: 'admin' })
                                     .then(newAdmin => {
                                         expect(newAdmin.role).to.equal(adminUser.role);
                                         expect(newAdmin.userId).to.equal(adminUser.userId);
                                         done();
                                     })
+                            })
+                            .catch(err => {
+                                console.log(err);
+                                assert.fail(err);
+                                done();
                             })
                     })
             })

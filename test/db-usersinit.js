@@ -3,7 +3,7 @@ const { dbHandler } = require('ngcstesthelpers');
 const { RoleServices } = require('ngcsroles');
 const initusersdb = require('../config/initusersdb');
 
-describe('Databse Initialization', function () {
+describe('User Database Initialization', function () {
     before(async () => {
         await dbHandler.connect();
     });
@@ -50,21 +50,21 @@ describe('Databse Initialization', function () {
                     .then(() => {
                         initusersdb()
                             .then(() => {
-                                RoleServices.findRole({ name: 'users' })
+                                RoleServices.findRoleByName({ name: 'users' })
                                     .then(users => {
                                         expect(users).not.to.be.null;
                                         expect(users).not.to.be.undefined;
                                         return users;
                                     })
                                     .then(users => {
-                                        return RoleServices.findRole({ name: 'administrators' })
+                                        return RoleServices.findRoleByName({ name: 'administrators' })
                                             .then(newAdmins => {
                                                 expect(newAdmins.subRoles).includes(users.roleId);
                                                 return users;
                                             })
                                     })
                                     .then(users => {
-                                        return RoleServices.findRole({ name: 'toolsmanagers' })
+                                        return RoleServices.findRoleByName({ name: 'toolsmanagers' })
                                             .then(newTools => {
                                                 expect(newTools.subRoles).includes(users.roleId);
                                                 return users;
@@ -90,11 +90,11 @@ describe('Databse Initialization', function () {
                     .then(() => {
                         RoleServices.createRole({ name: 'toolsmanagers', label: 'toolsmanagers' })
                             .then(tools => {
-                                RoleServices.addSubRoleToRole({ parentRoleId: tools.roleId, subRoleId: users.roleId })
+                                RoleServices.addSubRoleToRole({ roleId: tools.roleId, subRoleId: users.roleId })
                                     .then(r => {
                                         initusersdb()
                                             .then(() => {
-                                                RoleServices.findRole({ name: 'administrators' })
+                                                RoleServices.findRoleByName({ name: 'administrators' })
                                                     .then(newAdmins => {
                                                         expect(newAdmins.subRoles).includes(users.roleId);
                                                         done();
@@ -118,11 +118,11 @@ describe('Databse Initialization', function () {
                     .then(() => {
                         RoleServices.createRole({ name: 'administrators', label: 'administrators' })
                             .then(admin => {
-                                RoleServices.addSubRoleToRole({ parentRoleId: admin.roleId, subRoleId: users.roleId })
+                                RoleServices.addSubRoleToRole({ roleId: admin.roleId, subRoleId: users.roleId })
                                     .then(() => {
                                         initusersdb()
                                             .then(() => {
-                                                RoleServices.findRole({ name: 'toolsmanagers' })
+                                                RoleServices.findRoleByName({ name: 'toolsmanagers' })
                                                     .then(newTools => {
                                                         expect(newTools.subRoles).includes(users.roleId);
                                                         done();

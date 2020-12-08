@@ -33,14 +33,14 @@ describe('Tools Database Initialization', function () {
             .then(admins => {
                 inittoolsdb()
                     .then(result => {
-                        RoleServices.findRole({ name: 'toolsmanagers' })
+                        RoleServices.findRoleByName({ name: 'toolsmanagers' })
                             .then(tools => {
                                 expect(tools).not.to.be.null;
                                 expect(tools).not.to.be.undefined;
                                 return tools;
                             })
                             .then(users => {
-                                return RoleServices.findRole({ name: 'administrators' })
+                                return RoleServices.findRoleByName({ name: 'administrators' })
                                     .then(newAdmins => {
                                         expect(newAdmins.subRoles).to.include(users.roleId);
                                         return users;
@@ -64,20 +64,44 @@ describe('Tools Database Initialization', function () {
                 RoleServices.createRole({ name: 'administrators', label: 'administrators' })
                     .then(admins => {
                         inittoolsdb()
-                            .then(result => {
-                                return users;
-                            })
-                            .then(users => {
-                                return RoleServices.findRole({ name: 'administrators' })
+                            .then(() => {
+                                RoleServices.findRoleByName({ name: 'administrators' })
                                     .then(newAdmins => {
                                         expect(newAdmins.subRoles).includes(users.roleId);
-                                        return users;
+                                        done();
                                     })
                             })
-                            .then(users => {
-                                done();
+                    });
+            })
+            .catch(err => {
+                console.log(err);
+                assert.fail(err);
+                done();
+            })
+    });
+
+    it('should not change anything if everything is in order', function (done) {
+        RoleServices.createRole({ name: 'toolsmanagers', label: 'toolsmanagers' })
+            .then(toolRole => {
+                RoleServices.createRole({ name: 'administrators', label: 'administrators' })
+                    .then(adminRole => {
+                        RoleServices.addSubRoleToRole({ roleId: adminRole.roleId, subRoleId: toolRole.roleId })
+                            .then(() => {
+                                inittoolsdb()
+                                    .then(() => {
+                                        RoleServices.findRoleByName({ name: 'administrators' })
+                                            .then(newAdmins => {
+                                                expect(newAdmins.subRoles).includes(toolRole.roleId);
+                                                done();
+                                            })
+                                    })
                             })
                     });
-            });
+            })
+            .catch(err => {
+                console.log(err);
+                assert.fail(err);
+                done();
+            })
     });
 });
