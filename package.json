@@ -8,7 +8,7 @@
   },
   "scripts": {
     "start": "node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "nyc mocha"
   },
   "repository": {
     "type": "git",
@@ -34,5 +34,12 @@
     "ngcstools": "git+https://github.com/lstumme/ngcstools.git",
     "ngcsusers": "git+https://github.com/lstumme/ngcsusers.git"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^8.2.1",
+    "mongodb-memory-server": "^6.9.2",
+    "ngcstesthelpers": "git+https://github.com/lstumme/ngcstesthelpers.git",
+    "nyc": "^15.1.0",
+    "sinon": "^9.2.1"
+  }
 }
