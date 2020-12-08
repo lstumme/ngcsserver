@@ -94,7 +94,6 @@ describe('Admin integration', function () {
                 email: 'managerUser@user.com',
                 role: managerRole.roleId
             })
-            console.log(toolUser);
         });
 
 
